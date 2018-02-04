@@ -120,7 +120,7 @@ namespace gpio
          * Ritorna il tipo della connessione
          * @return Tipo della connessione
          */
-        virtual gpio::Connection getTypeOfConnection() const = 0;
+        virtual gpio::Connection getConnectionType() const = 0;
 
         /**
          * Ritorna il tag associato al pin
