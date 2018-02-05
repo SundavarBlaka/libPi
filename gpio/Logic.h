@@ -36,6 +36,10 @@ namespace gpio
 
         virtual ~Logic()
         {}
+
+        bool operator==(const Logic &that) const;
+
+        bool operator!=(const Logic &that) const;
     };
 }
 

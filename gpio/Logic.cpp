@@ -13,4 +13,14 @@ namespace gpio
     {
         return _val;
     }
+
+    bool Logic::operator==(const Logic &that) const
+    {
+        return toBoolean() == that.toBoolean();
+    }
+
+    bool Logic::operator!=(const Logic &that) const
+    {
+        return !(rhs == *this);
+    }
 }
