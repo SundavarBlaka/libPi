@@ -8,9 +8,13 @@
 #include <string>
 #include <stdexcept>
 #include <ostream>
-#include "wiringPi.h"
 #include "Pud.h"
-#include "Connection.h"
+#include "ConnectionType.h"
+
+extern "C"
+{
+#include "wiringPi.h"
+};
 
 namespace gpio
 {
@@ -21,11 +25,10 @@ namespace gpio
     {
     private:
         unsigned short _num;
-        gpio::Connection _type;
+        gpio::ConnectionType _type;
         std::string _tag;
         gpio::Pud _pud;
         static unsigned short _maxPinNumber;       //massimo numero che i pin possono assumere
-        static bool _isSystemSetUp = false;        //indica se il sistema è pronto all'uso
 
         /**
          * Controlla i parametri passati al costruttore
@@ -39,7 +42,7 @@ namespace gpio
          * @param type Tipo della connessione
          * @param pud Resistenza pullUp/Down
          */
-        void setupPin(unsigned short pinNumber, gpio::Connection type, gpio::Pud pud);
+        void setupPin(const unsigned short pinNumber, const gpio::ConnectionType &type, const gpio::Pud &pud);
 
         /**
         * Ritorna il numero massimo che può essere associato ad un pin
@@ -50,19 +53,7 @@ namespace gpio
         /**
          * Imposta il numero massimo che i pin possono assumere
          */
-        void setMaxPinNumber(unsigned short max);
-
-        /**
-        * Effettua il setup preliminare dei pin.
-        * Questo metodo deve essere eseguito prima di utilizzare i pin.
-        */
-        void setup();
-
-        /**
-        * Ritorna se è stato effettuato il setup dei pin
-        * @return vero se è stato effettuato il setup dei pin, falso altrimenti
-        */
-        bool isSystemSetUp() const;
+        static void setMaxPinNumber(unsigned short max);
 
     public:
 
@@ -72,15 +63,9 @@ namespace gpio
          * @param type Tipo della connessione
          * @param tag Tag
          */
-        Pin(const unsigned short pinNumber, const gpio::Connection type, const std::string tag = "no tag")
+        Pin(const unsigned short pinNumber, const gpio::ConnectionType &type, const std::string &tag = "no tag")
                 : _num{pinNumber}, _type{type}, _tag{tag}, _pud{Pud::NoPull}
         {
-            //Controlla che sia stato effettuato il setup
-            if (!Pin::isSystemSetUp())
-            {
-                setup();
-            }
-
             checkCtor(pinNumber);
             setupPin(pinNumber, type, Pud::NoPull);
         }
@@ -92,16 +77,10 @@ namespace gpio
          * @param tag Tag
          */
         Pin(const unsigned short pinNumber, const gpio::Pud pud, const std::string tag = "no tag")
-                : _num{pinNumber}, _type{Connection::Input}, _tag{tag}, _pud{pud}
+                : _num{pinNumber}, _type{ConnectionType::Input}, _tag{tag}, _pud{pud}
         {
-            //Controlla che sia stato effettuato il setup
-            if (!Pin::isSystemSetUp())
-            {
-                setup();
-            }
-
             checkCtor(pinNumber);
-            setupPin(pinNumber, Connection::Input, pud);
+            setupPin(pinNumber, ConnectionType::Input, pud);
         }
 
         /**
@@ -120,7 +99,7 @@ namespace gpio
          * Ritorna il tipo della connessione
          * @return Tipo della connessione
          */
-        virtual gpio::Connection getConnectionType() const = 0;
+        virtual gpio::ConnectionType getConnectionType() const = 0;
 
         /**
          * Ritorna il tag associato al pin
@@ -133,6 +112,12 @@ namespace gpio
          * @return PUD
          */
         virtual Pud getPud() const;
+
+        /**
+        * Effettua il setup preliminare dei pin.
+        * Questo metodo deve essere eseguito prima di utilizzare i pin.
+        */
+        static void setup();
 
         /**
          * Operatore di uguaglianza

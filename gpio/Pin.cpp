@@ -26,11 +26,6 @@ namespace gpio
         return _maxPinNumber;
     }
 
-    void Pin::setMaxPinNumber(const unsigned short max)
-    {
-        _maxPinNumber = max;
-    }
-
     void Pin::checkCtor(const unsigned short pinNumber) const
     {
         if (pinNumber <= 0 || pinNumber > getMaxPinNumber())
@@ -39,29 +34,29 @@ namespace gpio
         }
     }
 
-    void Pin::setupPin(const unsigned short pinNumber, const gpio::Connection type, const gpio::Pud pud)
+    void Pin::setupPin(const unsigned short pinNumber, const gpio::ConnectionType &type, const gpio::Pud &pud)
     {
         //procedi normalmente
         int mode, pullMode;
 
         switch (type)
         {
-            case Connection::Input:
+            case ConnectionType::Input:
             {
                 mode = INPUT;
                 break;
             }
-            case Connection::Output:
+            case ConnectionType::Output:
             {
                 mode = OUTPUT;
                 break;
             }
-            case Connection::PwmOutput:
+            case ConnectionType::PwmOutput:
             {
                 mode = PWM_OUTPUT;
                 break;
             }
-            case Connection::GpioClock:
+            case ConnectionType::GpioClock:
             {
                 mode = GPIO_CLOCK;
                 break;
@@ -91,37 +86,33 @@ namespace gpio
         pinMode(pinNumber, mode);
 
         //sets up the pull up/down resistor
-        //if is enabled pull up or pull down pin must be set as Connection::Input
+        //if is enabled pull up or pull down pin must be set as ConnectionType::Input
         //this check is performed by constructor signature
         pullUpDnControl(pinNumber, pullMode);
     }
 
+    static void Pin::setMaxPinNumber(const unsigned short max)
+    {
+        _maxPinNumber = max;
+    }
 
-    void Pin::setup()
+    static void Pin::setup()
     {
         wiringPiSetupGpio();
 
         //TODO implementare la routine per la rilevazione del massimo numero di pin dispoibile
         setMaxPinNumber(26);
-
-        Pin::_isSystemSetUp = true;
     }
-
 
 
     bool Pin::operator==(const Pin &that) const
     {
-        return _num == that.getPin() &&
-               _type == that.getType();
+        return _num == that.getPinNumber() &&
+               _type == that.getConnectionType();
     }
 
     bool Pin::operator!=(const Pin &that) const
     {
         return !(that == *this);
-    }
-
-    bool Pin::isSystemSetUp() const
-    {
-        return _isSystemSetUp;
     }
 }
