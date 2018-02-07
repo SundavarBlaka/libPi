@@ -10,26 +10,26 @@
 
 namespace gpio
 {
-    class Connection : public lib::Enum
+    class ConnectionType : public lib::Enum
     {
     protected:
         /**
          * Costruttore
          * @param nome Nome della costante
          */
-        explicit Connection(const std::string &nome) : Enum{nome}
+        explicit ConnectionType(const std::string &nome) : Enum{nome}
         {};
 
     public:
         /**
          * Costanti della enumerazione
          */
-        static const Connection Input;
-        static const Connection Output;
-        static const Connection PwmOutput;
-        static const Connection GpioClock;
+        static const ConnectionType Input;
+        static const ConnectionType Output;
+        static const ConnectionType PwmOutput;
+        static const ConnectionType GpioClock;
 
-        virtual ~Connection()
+        virtual ~ConnectionType()
         {};
     };
 }
