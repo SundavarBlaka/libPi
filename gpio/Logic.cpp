@@ -21,6 +21,6 @@ namespace gpio
 
     bool Logic::operator!=(const Logic &that) const
     {
-        return !(rhs == *this);
+        return !(that == *this);
     }
 }

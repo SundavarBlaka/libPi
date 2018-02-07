@@ -26,9 +26,9 @@ namespace lib
     public:
         virtual std::string toString() const;
 
-        bool operator==(const Enum &rhs) const;
+        bool operator==(const Enum &that) const;
 
-        bool operator!=(const Enum &rhs) const;
+        bool operator!=(const Enum &that) const;
 
         virtual ~Enum()
         {};

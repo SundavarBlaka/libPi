@@ -19,13 +19,13 @@ namespace lib
         return _enumName;
     }
 
-    bool Enum::operator==(const Enum &rhs) const
+    bool Enum::operator==(const Enum &that) const
     {
-        return _enumName == rhs._enumName;
+        return _enumName == that._enumName;
     }
 
-    bool Enum::operator!=(const Enum &rhs) const
+    bool Enum::operator!=(const Enum &that) const
     {
-        return !(rhs == *this);
+        return !(that == *this);
     }
 }
