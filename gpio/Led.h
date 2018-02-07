@@ -28,7 +28,7 @@ namespace gpio
         /**
          * accende il led
          */
-        virtual void turnOn() const
+        virtual void turnOn() const;
 
         /**
          * spegne il led

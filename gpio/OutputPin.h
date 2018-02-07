@@ -18,14 +18,14 @@ namespace gpio
          * @param pin Pin a cui collegarsi
          * @param tag Tag relativo al collegamento
          */
-        OutputPin(const unsigned short pin, const std::string tag) : Pin(pin, Connection::Output, tag)
+        OutputPin(const unsigned short pin, const std::string tag) : Pin(pin, ConnectionType::Output, tag)
         {}
 
         /**
          * Ritorna il tipo della connessione
          * @return Tipo della connessione
          */
-        virtual Connection getConnectionType() const override;
+        virtual ConnectionType getConnectionType() const override;
 
         void write(Logic val) const;
 

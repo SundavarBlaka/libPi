@@ -18,7 +18,7 @@ namespace gpio
          * @param pin Pin a cui collegarsi
          * @param tag Tag relativo alla connessione
          */
-        InputPin(const unsigned short pin, const std::string tag) : Pin{pin, Connection::Input, tag}
+        InputPin(const unsigned short pin, const std::string tag) : Pin{pin, ConnectionType::Input, tag}
         {}
 
         /**
@@ -34,7 +34,7 @@ namespace gpio
          * Ritorna il tipo della connessione
          * @return Tipo della connessione
          */
-        virtual Connection getConnectionType() const override;
+        virtual ConnectionType getConnectionType() const override;
 
         /**
          * Legge un dato dal pin

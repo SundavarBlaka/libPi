@@ -6,9 +6,9 @@
 
 namespace gpio
 {
-    Connection OutputPin::getConnectionType() const
+    ConnectionType OutputPin::getConnectionType() const
     {
-        return Connection::Output;
+        return ConnectionType::Output;
     }
 
     void OutputPin::write(Logic val) const

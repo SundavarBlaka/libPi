@@ -6,9 +6,9 @@
 
 namespace gpio
 {
-    Connection InputPin::getConnectionType() const
+    ConnectionType InputPin::getConnectionType() const
     {
-        return Connection::Input;
+        return ConnectionType::Input;
     }
 
     gpio::Logic InputPin::read() const
