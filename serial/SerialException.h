@@ -5,24 +5,16 @@
 #ifndef LIBPI_SERIALEXCEPTION_H
 #define LIBPI_SERIALEXCEPTION_H
 
-#include <exception>
 #include <string>
+#include <stdexcept>
 
 namespace serial
 {
-    class SerialException : public std::exception
+    class SerialException : public std::runtime_error
     {
-    private:
-        std::string msg;
     public:
 
-        SerialException(const std::string &msg) : exception()
-        {}
-
-        const char* what() const override;
-
-        virtual ~SerialException()
-        {};
+        explicit SerialException(const char* msg);
     };
 }
 

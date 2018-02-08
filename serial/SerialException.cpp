@@ -6,8 +6,8 @@
 
 namespace serial
 {
-    const char *SerialException::what() const
+    SerialException::SerialException(const char *msg) : std::runtime_error(msg)
     {
-        return msg.c_str();
+
     }
 }
