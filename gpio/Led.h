@@ -7,39 +7,35 @@
 
 #include <chrono>
 #include <thread>
-#include "Device.h"
-#include "Logic.h"
 #include "OutputPin.h"
 
 namespace gpio
 {
-    class Led : public gpio::Device
-    {
-    private:
-        gpio::OutputPin _pin;
+class Led
+{
+private:
+  gpio::OutputPin _pin;
 
+  const gpio::OutputPin &getPin() const;
 
-        const gpio::OutputPin *const getPin() const;
+public:
+  Led(const gpio::OutputPin &pin);
 
-    public:
-        Led(const gpio::OutputPin &pin, const std::string &name) : _pin{pin}, Device(name)
-        {}
-
-        /**
+  /**
          * accende il led
          */
-        virtual void turnOn() const;
+  virtual void turnOn() const;
 
-        /**
+  /**
          * spegne il led
          */
-        virtual void turnOff() const;
+  virtual void turnOff() const;
 
-        /**
+  /**
          * fa lampeggiare il led con una certa frequenza
          * @param freq Frequenza del lampeggiante
          */
-        virtual void blink(const unsigned float freq, const unsigned short sec) const;
-    };
+  virtual void blink(const float freq, const unsigned short sec) const;
+};
 }
 #endif //LIBPI_LED_H

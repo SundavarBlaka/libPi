@@ -6,15 +6,19 @@
 
 namespace gpio
 {
-    ConnectionType OutputPin::getConnectionType() const
-    {
-        return ConnectionType::Output;
-    }
 
-    void OutputPin::write(Logic val) const
-    {
-        int d = (val.toBoolean()) ? 1 : 0;
+OutputPin::OutputPin(const unsigned short &pin)
+    : Pin(pin, ConnectionType::Output) {}
 
-        digitalWrite(d);
-    }
+ConnectionType OutputPin::getConnectionType() const
+{
+    return ConnectionType::Output;
+}
+
+void OutputPin::write(bool val) const
+{
+    int d = (val) ? 1 : 0;
+
+    digitalWrite(getPinNumber(), d);
+}
 }

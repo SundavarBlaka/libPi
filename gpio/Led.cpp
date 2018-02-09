@@ -6,38 +6,38 @@
 
 namespace gpio
 {
-    const gpio::OutputPin *const Led::getPin() const
+
+Led::Led(const gpio::OutputPin &pin) : _pin{pin} {}
+
+const gpio::OutputPin &Led::getPin() const
+{
+    return _pin;
+}
+
+void Led::turnOn() const
+{
+    getPin().write(true);
+}
+
+void Led::turnOff() const
+{
+    getPin().write(false);
+}
+
+void Led::blink(const float freq, const unsigned short sec) const
+{
+    float time = sec / freq;
+
+    for (int i = 0; i + 1 < sec * freq; ++i)
     {
-        return &_pin;
+        //accende il led
+        turnOn();
+        //aspetta x millisecondi
+        delay(time * 1000);
+        //spegni
+        turnOff();
+        //aspetta
+        delay(time * 1000);
     }
-
-    void Led::turnOn() const
-    {
-        getPin()->write(Logic::High);
-    }
-
-    void Led::turnOff() const
-    {
-        getPin()->write(Logic::Low);
-    }
-
-    void Led::blink(const unsigned float freq, const unsigned short sec) const
-    {
-        float time = sec / freq;
-
-        std::chrono::duration<int, std::milli> timespan(time * 1000);
-
-        for (int i = 0; i + 1 < sec * freq; ++i)
-        {
-            //accende il led
-            turnOn();
-            //aspetta x millisecondi
-            std::this_thread::sleep_for(timespan);
-            //spegni
-            turnOff();
-            //aspetta
-            std::this_thread::sleep_for(timespan);
-        }
-
-    }
+}
 }

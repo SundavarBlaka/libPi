@@ -6,32 +6,31 @@
 #define LIBPI_OUTPUTPIN_H
 
 #include "Pin.h"
-#include "Logic.h"
 
 namespace gpio
 {
-    class OutputPin : public Pin
-    {
-    public:
-        /**
+class OutputPin : public Pin
+{
+  public:
+    /**
          * Costruttore
          * @param pin Pin a cui collegarsi
          * @param tag Tag relativo al collegamento
          */
-        OutputPin(const unsigned short pin, const std::string tag) : Pin(pin, ConnectionType::Output, tag)
-        {}
+    OutputPin(const unsigned short &pin);
 
-        /**
+    /**
          * Ritorna il tipo della connessione
          * @return Tipo della connessione
          */
-        virtual ConnectionType getConnectionType() const override;
+    virtual ConnectionType getConnectionType() const override;
 
-        void write(Logic val) const;
+    void write(bool val) const;
 
-        virtual ~OutputPin()
-        {}
-    };
+    virtual ~OutputPin()
+    {
+    }
+};
 }
 
 #endif //LIBPI_OUTPUTPIN_H
