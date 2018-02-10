@@ -14,35 +14,58 @@ Sonar::Sonar(const OutputPin &trigger, const InputPin &echo, const unsigned int 
     delay(500);
 }
 
-const float Sonar::getDistance() const
+float Sonar::getDistance(bool &error) const
 {
     //TODO spostare la procedura in un thread separato
 
-    //aspetta 10ms per essere sicuro di non accavallarsi alle onde riflesse
-    delay(10);
+    float res = 0;
 
-    //invia un impulso di 10 us
-    getTriggerPin().write(true);
+    //assicurati che trigger sia false
+    _trigger.write(false);
+    delay(50);
+
+    // invia un impulso
+    _trigger.write(true);
     delayMicroseconds(10);
-    getTriggerPin().write(false);
+    _trigger.write(false);
 
-    //salva l'istante in cui inizia la ricerca
-    unsigned int now = micros();
+    //salva il momento in cui inizia la ricerca
+    unsigned long now = micros();
 
-    //aspetta fino a che le condizioni necessarie per la rilevazione non si verificano
-    while (getEchoPin().read() == false && micros() - now < _timeout)
+    while (_echo.read() == false && (micros() - now) <= _timeout)
     {
     }
 
-    //tempi in us
-    unsigned int startTime, endTime, travelTime;
+    // Controlla il timeout
+    if (micros() - now > _timeout)
+    {
+        std::cerr << "Fuori dal raggio d'azione" << std::endl;
+    }
+    else
+    {
+        unsigned long ping, pong;
+        ping = micros();
 
-    recordPulse(startTime, endTime);
+        // Aspetta una risposta
+        while (_echo.read() == true && (micros() - ping) <= _timeout)
+        {
+        }
 
-    travelTime = endTime - startTime;
+        // Controlla il timeout
+        if ((micros() - ping) <= _timeout)
+        {
+            std::cerr << "Fuori dal raggio d'azione" << std::endl;
+        }
+        else
+        {
+            pong = micros();
 
-    //ritorna il calcolo della distanza
-    return ((travelTime / 1000000.0F) * 340.29F) / 2;
+            // Calcola la distanza
+            res = (pong - ping) * 0.017150F;
+        }
+    }
+
+    return res;
 }
 
 void Sonar::recordPulse(unsigned int &startTime, unsigned int &endTime) const

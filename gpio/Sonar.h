@@ -50,7 +50,7 @@ public:
    * @param trigger Pin associato all'azione trigger
    * @param echo Pin designato alla ricezione del segnale
    * @param tag Tag del dispositivo
-   * @param timeout Tempo massimo in cui aspettare il segnale di ritorno
+   * @param timeout Tempo massimo in cui aspettare il segnale di ritorno in millisecondi
    */
   Sonar(const OutputPin &trigger, const InputPin &echo, const unsigned int timeout);
 
@@ -59,7 +59,7 @@ public:
    * @note
    * @retval Distanza misurata
    */
-  const float getDistance() const;
+  float getDistance(bool &error) const;
 
   /**
    * @brief Ritorna il tempo massimo che una misurazione può usare
