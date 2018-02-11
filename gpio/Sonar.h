@@ -7,7 +7,7 @@
 
 #include "InputPin.h"
 #include "OutputPin.h"
-#include <cmath>
+#include <iostream>
 
 extern "C" {
 #include "wiringPi.h"

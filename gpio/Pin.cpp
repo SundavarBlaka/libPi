@@ -32,7 +32,7 @@ Pud Pin::getPud() const
 
 unsigned short Pin::getMaxPinNumber() const
 {
-  return _maxPinNumber;
+  return 40;
 }
 
 void Pin::checkCtor(const unsigned short &pinNumber) const
@@ -100,18 +100,12 @@ void Pin::setupPin(const unsigned short &pinNumber, const gpio::ConnectionType &
   pullUpDnControl(pinNumber, pullMode);
 };
 
-void Pin::setMaxPinNumber(const unsigned short &max)
-{
-  _maxPinNumber = max;
-}
-
 void Pin::setup()
 {
   wiringPiSetupGpio();
 
   // TODO implementare la routine per la rilevazione del massimo numero di pin
   // disponibile
-  setMaxPinNumber(40);
 }
 
 bool Pin::operator==(const Pin &that) const

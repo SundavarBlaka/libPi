@@ -40,6 +40,7 @@ float Sonar::getDistance(bool &error) const
     if (micros() - now > _timeout)
     {
         std::cerr << "Fuori dal raggio d'azione" << std::endl;
+        error = true;
     }
     else
     {
@@ -52,9 +53,10 @@ float Sonar::getDistance(bool &error) const
         }
 
         // Controlla il timeout
-        if ((micros() - ping) <= _timeout)
+        if ((micros() - ping) > _timeout)
         {
             std::cerr << "Fuori dal raggio d'azione" << std::endl;
+            error = true;
         }
         else
         {
@@ -62,6 +64,7 @@ float Sonar::getDistance(bool &error) const
 
             // Calcola la distanza
             res = (pong - ping) * 0.017150F;
+            error = false;
         }
     }
 

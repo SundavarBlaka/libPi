@@ -15,6 +15,8 @@ extern "C" {
 #include "wiringPi.h"
 };
 
+//TODO impedire la creazione di un pin se non è stato eseguito il setup dei pin
+
 namespace gpio
 {
 /**
@@ -26,7 +28,6 @@ private:
   unsigned short _num;
   gpio::ConnectionType _type;
   gpio::Pud _pud;
-  static unsigned short _maxPinNumber; // massimo numero che i pin possono assumere
 
   /**
    * Controlla i parametri passati al costruttore
@@ -47,11 +48,6 @@ private:
    * @return Numero massimo valido
    */
   unsigned short getMaxPinNumber() const;
-
-  /**
-   * Imposta il numero massimo che i pin possono assumere
-   */
-  static void setMaxPinNumber(const unsigned short &max);
 
 public:
   /**
