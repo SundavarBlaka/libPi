@@ -1,7 +1,3 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #ifndef LIBPI_INPUTPIN_H
 #define LIBPI_INPUTPIN_H
 
@@ -9,38 +5,48 @@
 
 namespace gpio
 {
+/**
+ * @brief Describes an input pin 
+ * 
+ */
 class InputPin : public Pin
 {
 public:
   /**
-   * Costruttore
-   * @param pin Pin a cui collegarsi
-   * @param tag Tag relativo alla connessione
+   * @brief Constructor
+   * 
+   * @param pin Pin number according to BCM numeration system
    */
   InputPin(const unsigned short &pin);
 
   /**
-   * Costruttore
-   * @param pin Pin a cui collegarsi
-   * @param pud Tipologia di resistenza
-   * @param tag Tag relativo alla connessione
+   * @brief Constructor
+   * 
+   * @param pin Pin number according to BCM numeration system
+   * @param pud Internal resistor
    */
   InputPin(const unsigned short &pin, const gpio::Pud &pud);
 
   /**
-   * Ritorna il tipo della connessione
-   * @return Tipo della connessione
+   * @brief Returns the type of connection
+   * 
+   * @return Type of connection
    */
-  virtual ConnectionType getConnectionType() const override;
+  virtual gpio::ConnectionType getConnectionType() const override;
 
   /**
-   * Legge un dato dal pin
-   * @return Dato letto
+   * @brief Reads from the pin
+   * 
+   * @return Pin status
    */
   bool read() const;
 
+  /**
+   * @brief Destructor
+   * 
+   */
   virtual ~InputPin();
 };
-}
+} // namespace gpio
 
 #endif // LIBPI_INPUTPIN_H

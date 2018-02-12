@@ -1,16 +1,14 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #include "OutputPin.h"
 
 namespace gpio
 {
 
 OutputPin::OutputPin(const unsigned short &pin)
-    : Pin(pin, ConnectionType::Output) {}
+    : Pin(pin, ConnectionType::Output)
+{
+}
 
-ConnectionType OutputPin::getConnectionType() const
+gpio::ConnectionType OutputPin::getConnectionType() const
 {
     return ConnectionType::Output;
 }
@@ -21,4 +19,4 @@ void OutputPin::write(bool val) const
 
     digitalWrite(getPinNumber(), d);
 }
-}
+} // namespace gpio

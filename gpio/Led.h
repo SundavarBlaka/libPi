@@ -1,41 +1,54 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #ifndef LIBPI_LED_H
 #define LIBPI_LED_H
 
-#include <chrono>
-#include <thread>
 #include "OutputPin.h"
 
 namespace gpio
 {
+/**
+ * @brief Represents a generic led
+ * 
+ */
 class Led
 {
 private:
   gpio::OutputPin _pin;
-
-  const gpio::OutputPin &getPin() const;
+  bool _status;
 
 public:
+  /**
+   * @brief Constructor
+   * 
+   * @param pin OutputPin connectoed to the led
+   */
   Led(const gpio::OutputPin &pin);
 
   /**
-         * accende il led
-         */
+   * @brief Turns on the led
+   * 
+   */
   virtual void turnOn() const;
 
   /**
-         * spegne il led
-         */
+   * @brief Turns off the led
+   * 
+   */
   virtual void turnOff() const;
 
   /**
-         * fa lampeggiare il led con una certa frequenza
-         * @param freq Frequenza del lampeggiante
-         */
+   * @brief Makes the led blink with the specified frequncy for the given time
+   * 
+   * @param freq Frequency
+   * @param sec Duration
+   */
   virtual void blink(const float freq, const unsigned short sec) const;
+
+  /**
+   * @brief Destructor
+   * 
+   */
+  virtual ~Led();
 };
-}
+} //namespace gpio
+
 #endif //LIBPI_LED_H

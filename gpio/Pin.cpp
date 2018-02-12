@@ -1,20 +1,16 @@
-//
-// Created by federico on 03/02/18.
-//
-
 #include "Pin.h"
 
 namespace gpio
 {
 Pin::Pin(const unsigned short &pinNumber, const gpio::ConnectionType &type)
-    : _num{pinNumber}, _type{type}, _pud{Pud::NoPull}
+    : _num{pinNumber}, _type{type}, _pud{Pud::NoPull}, _status{false}
 {
   checkCtor(pinNumber);
   setupPin(pinNumber, type, Pud::NoPull);
 }
 
 Pin::Pin(const unsigned short &pinNumber, const gpio::Pud &pud)
-    : _num{pinNumber}, _type{ConnectionType::Input}, _pud{pud}
+    : _num{pinNumber}, _type{ConnectionType::Input}, _pud{pud}, _status{false}
 {
   checkCtor(pinNumber);
   setupPin(pinNumber, ConnectionType::Input, pud);
@@ -30,17 +26,16 @@ Pud Pin::getPud() const
   return _pud;
 }
 
-unsigned short Pin::getMaxPinNumber() const
+bool Pin::getStatus() const
 {
-  return 40;
+  return _status;
 }
 
 void Pin::checkCtor(const unsigned short &pinNumber) const
 {
-  if (pinNumber <= 0 || pinNumber > getMaxPinNumber())
+  if (pinNumber <= 0 || pinNumber > MAXPIN)
   {
-    throw std::invalid_argument("Pin number must be between 1 and" +
-                                getMaxPinNumber());
+    throw std::invalid_argument("Pin number must be between 1 and" + MAXPIN);
   }
 }
 
@@ -102,19 +97,24 @@ void Pin::setupPin(const unsigned short &pinNumber, const gpio::ConnectionType &
 
 void Pin::setup()
 {
+  //TODO: controllare che il setup non ritorni -1
   wiringPiSetupGpio();
 
-  // TODO implementare la routine per la rilevazione del massimo numero di pin
+  // TODO: implementare la routine per la rilevazione del massimo numero di pin
   // disponibile
 }
 
 bool Pin::operator==(const Pin &that) const
 {
-  return _num == that.getPinNumber() && _type == that.getConnectionType();
+  return _num == that._num && _type == that._type && _pud == that._pud;
 }
 
 bool Pin::operator!=(const Pin &that) const
 {
   return !(that == *this);
+}
+
+Pin::~Pin()
+{
 }
 } // namespace gpio

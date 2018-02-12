@@ -1,13 +1,11 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #include "InputPin.h"
 
 namespace gpio
 {
 InputPin::InputPin(const unsigned short &pin)
-    : Pin{pin, ConnectionType::Input} {}
+    : Pin{pin, ConnectionType::Input}
+{
+}
 
 InputPin::InputPin(const unsigned short &pin, const gpio::Pud &pud)
     : Pin{pin, pud} {}
@@ -24,5 +22,7 @@ bool InputPin::read() const
     return (val == 0) ? false : true;
 }
 
-InputPin::~InputPin(){}
+InputPin::~InputPin()
+{
+}
 } // namespace gpio

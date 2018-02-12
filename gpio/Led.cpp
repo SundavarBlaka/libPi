@@ -1,27 +1,33 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #include "Led.h"
 
 namespace gpio
 {
 
-Led::Led(const gpio::OutputPin &pin) : _pin{pin} {}
-
-const gpio::OutputPin &Led::getPin() const
+Led::Led(const gpio::OutputPin &pin) : _pin{pin}, _status{false}
 {
-    return _pin;
+    //se il pin è acceso
+    if (_pin.getStatus())
+    {
+        _pin.write(false);
+    }
 }
 
 void Led::turnOn() const
 {
-    getPin().write(true);
+    //se il pin è spento accendilo
+    if (!_status)
+    {
+        _pin.write(true);
+    }
 }
 
 void Led::turnOff() const
 {
-    getPin().write(false);
+    //se il pin è acceso spegnilo
+    if (_status)
+    {
+        _pin.write(false);
+    }
 }
 
 void Led::blink(const float freq, const unsigned short sec) const
@@ -40,4 +46,8 @@ void Led::blink(const float freq, const unsigned short sec) const
         delay(time * 1000);
     }
 }
+
+Led::~Led()
+{
 }
+} //namespace gpio

@@ -1,7 +1,3 @@
-//
-// Created by federico on 03/02/18.
-//
-
 #ifndef LIBPI_CONNECTION_H
 #define LIBPI_CONNECTION_H
 
@@ -9,6 +5,10 @@
 
 namespace gpio
 {
+/**
+ * @brief Describes all possible connection's types
+ * 
+ */
 enum class ConnectionType : unsigned short
 {
   Input,
@@ -16,6 +16,6 @@ enum class ConnectionType : unsigned short
   PwmOutput,
   GpioClock
 };
-}
+} // namespace gpio
 
 #endif //LIBPI_CONNECTION_H

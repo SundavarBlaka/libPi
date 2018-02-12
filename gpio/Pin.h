@@ -1,7 +1,3 @@
-//
-// Created by federico on 03/02/18.
-//
-
 #ifndef LIBPI_PIN_H
 #define LIBPI_PIN_H
 
@@ -15,95 +11,113 @@ extern "C" {
 #include "wiringPi.h"
 };
 
-//TODO impedire la creazione di un pin se non è stato eseguito il setup dei pin
+//TODO: impedire la creazione di un pin se non è stato eseguito il setup dei pin
 
 namespace gpio
 {
 /**
- * Rappresenta un pin di Raspberry
+ * @brief Represents a pin
+ * 
  */
 class Pin
 {
 private:
+//TODO: eliminare la costante una volta implementato System
+#define MAXPIN 40
+
   unsigned short _num;
   gpio::ConnectionType _type;
   gpio::Pud _pud;
+  bool _status;
 
   /**
-   * Controlla i parametri passati al costruttore
-   * @param pinNumber numero del pin da controllare
+   * @brief Checks params given to the constructor
+   * 
+   * @param pinNumber Pin's number according to BCM numeration system
    */
   void checkCtor(const unsigned short &pinNumber) const;
 
   /**
-   * Effettua il setup reale del pin
-   * @param pinNumber Numero del pin
-   * @param type Tipo della connessione
-   * @param pud Resistenza pullUp/Down
+   * @brief Performs the real pin setup
+   * 
+   * @param pinNumber Pin's number according to BCM numeration system
+   * @param type Type of the connection
+   * @param pud Type of the resistor
    */
   void setupPin(const unsigned short &pinNumber, const gpio::ConnectionType &type, const gpio::Pud &pud);
 
-  /**
-   * Ritorna il numero massimo che può essere associato ad un pin
-   * @return Numero massimo valido
-   */
-  unsigned short getMaxPinNumber() const;
-
 public:
   /**
-   * Costruttore. Non è previsto nessun resistore PUD
-   * @param pinNumber Numero del pin secondo la numerazione BroadCom
-   * @param type Tipo della connessione
+   * @brief Constructor. No internal resistor is provided
+   * 
+   * @param pinNumber Pin number according to BCM numeration system
+   * @param type Type of the connection
    */
   Pin(const unsigned short &pinNumber, const gpio::ConnectionType &type);
 
   /**
-   * Costruttore. Non è previsto nessun resistore PUD
-   * @param pinNumber Numero del pin secondo la numerazione BroadCom
-   * @param pud Resistenza pullUp/Down
+   * @brief Constructor. The connection Type is implicitly ConnectionType::Input
+   * 
+   * @param pinNumber Pin number according to BCM numeration system
+   * @param pud Type of the resistor
    */
   Pin(const unsigned short &pinNumber, const gpio::Pud &pud);
 
   /**
-   * Distruttore
+   * @brief Destructor
+   * 
    */
-  virtual ~Pin() {}
+  virtual ~Pin();
 
   /**
-   * Ritorna il numero del pin associato
-   * @return Numero del pin associato
+   * @brief Returns the associated BCM pin number
+   * 
+   * @return BCM pin number
    */
   virtual unsigned short getPinNumber() const;
 
   /**
-   * Ritorna il tipo della connessione
-   * @return Tipo della connessione
+   * @brief Returns the connection type
+   * 
+   * @return Connection type associated to the pin
    */
   virtual gpio::ConnectionType getConnectionType() const = 0;
 
   /**
-   * Ritorna L'istanza di Pud associata
-   * @return PUD
+   * @brief Returns the type of internal resistor
+   * 
+   * @return Type of internal resistor
    */
-  virtual Pud getPud() const;
+  virtual gpio::Pud getPud() const;
 
   /**
-   * Effettua il setup preliminare dei pin.
-   * Questo metodo deve essere eseguito prima di utilizzare i pin.
+   * @brief Returns the status
+   * 
+   * @return Status of the pin (on/off) 
+   */
+  virtual bool getStatus() const;
+
+  /**
+   * @brief Performs the initial pins setup. It must be called at the beginning of every program which uses gpio namespace
+   * 
    */
   static void setup();
 
   /**
-   * Operatore di uguaglianza
-   * @param that Pin da confrontare
-   * @return vero se i due pin sono uguali, falso altrimenti
+   * @brief Equality operator
+   * 
+   * @param that Pin to be compared
+   * @return true If pins are equal
+   * @return false If pins are different
    */
   virtual bool operator==(const Pin &that) const;
 
   /**
-   * Operatore di disuguaglianza
-   * @param that Pin da confrontare
-   * @return vero se i due pin sono diversi, falso altrimenti
+   * @brief Inequality operator
+   * 
+   * @param that Pin to be compared
+   * @return true If pins are different
+   * @return false If pins are equal
    */
   virtual bool operator!=(const Pin &that) const;
 };

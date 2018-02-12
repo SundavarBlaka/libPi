@@ -1,7 +1,3 @@
-//
-// Created by federico on 05/02/18.
-//
-
 #include "Sonar.h"
 
 namespace gpio
@@ -10,8 +6,12 @@ namespace gpio
 Sonar::Sonar(const OutputPin &trigger, const InputPin &echo, const unsigned int timeout)
     : _trigger{trigger}, _echo{echo}, _timeout{timeout}
 {
-    _trigger.write(false);
-    delay(500);
+}
+
+Sonar::Sonar(const OutputPin &trigger, const InputPin &echo, const unsigned int maxDist)
+    : _trigger{trigger}, _echo{echo}
+{
+    _timeout = ((2 * maxDist) / 343.8F) * 100000;
 }
 
 float Sonar::getDistance(bool &error) const
@@ -71,29 +71,8 @@ float Sonar::getDistance(bool &error) const
     return res;
 }
 
-void Sonar::recordPulse(unsigned int &startTime, unsigned int &endTime) const
-{
-    startTime = micros();
-
-    while (getEchoPin().read() == true)
-    {
-    }
-
-    endTime = micros();
-}
-
-const OutputPin &Sonar::getTriggerPin() const
-{
-    return _trigger;
-}
-
-const InputPin &Sonar::getEchoPin() const
-{
-    return _echo;
-}
-
 const unsigned int Sonar::getTimeout() const
 {
     return _timeout;
 }
-}
+} // namespace gpio

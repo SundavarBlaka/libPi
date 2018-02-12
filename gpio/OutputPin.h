@@ -1,7 +1,3 @@
-//
-// Created by federico on 04/02/18.
-//
-
 #ifndef LIBPI_OUTPUTPIN_H
 #define LIBPI_OUTPUTPIN_H
 
@@ -11,26 +7,36 @@ namespace gpio
 {
 class OutputPin : public Pin
 {
-  public:
-    /**
-         * Costruttore
-         * @param pin Pin a cui collegarsi
-         * @param tag Tag relativo al collegamento
-         */
-    OutputPin(const unsigned short &pin);
+public:
+  /**
+   * @brief Constructor
+   * 
+   * @param pin Pin number according to BCM numeration system
+   */
+  OutputPin(const unsigned short &pin);
 
-    /**
-         * Ritorna il tipo della connessione
-         * @return Tipo della connessione
-         */
-    virtual ConnectionType getConnectionType() const override;
+  /**
+   * @brief Returns the type of connection
+   * 
+   * @return Type of connection
+   */
+  virtual gpio::ConnectionType getConnectionType() const override;
 
-    void write(bool val) const;
+  /**
+   * @brief Writes a value on this pin
+   * 
+   * @param val Value to be written
+   */
+  void write(bool val) const;
 
-    virtual ~OutputPin()
-    {
-    }
+  /**
+   * @brief Destructor
+   * 
+   */
+  virtual ~OutputPin()
+  {
+  }
 };
-}
+} // namespace gpio
 
 #endif //LIBPI_OUTPUTPIN_H
