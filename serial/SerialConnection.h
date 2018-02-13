@@ -1,88 +1,102 @@
-//
-// Created by federico on 08/02/18.
-//
-
 #ifndef LIBPI_SERIALCONNECTION_H
 #define LIBPI_SERIALCONNECTION_H
 
-
 #include <stdexcept>
+#include <iostream>
 #include "SerialException.h"
 
-extern "C"
-{
+extern "C" {
 #include "wiringSerial.h"
 };
 
 namespace serial
 {
-    class SerialConnection
-    {
-    private:
-        std::string _device;
-        unsigned int _baud;
-        int _fd;
-        bool _isOpened;
+class SerialConnection
+{
+  private:
+    std::string _device;
+    unsigned int _baud;
+    int _fd;
+    bool _isOpened;
 
-    public:
-        /**
-         * Costruttore
-         * @param device Nome del dispositivo
-         * @param baud Velocità della connsessione
-         */
-        SerialConnection(const std::string &device, const unsigned int &baud);
+  public:
+    /**
+     * @brief Constructor
+     * 
+     * @param device Device to connect to
+     * @param baud Baud
+     */
+    SerialConnection(const std::string &device, const unsigned int &baud);
 
-        /**
-         * Ottiene la velocità della connessione
-         * @return velocità della connessione
-         */
-        unsigned int getBaud() const;
+    /**
+     * @brief Returns the baud
+     * 
+     * @return Baud 
+     */
+    unsigned int getBaud() const;
 
-        /**
-         * Ottiene il nome del dispositivo
-         * @return Nome del dispositivo
-         */
-        std::string getDeviceName() const;
+    /**
+     * @brief Gets the device's name
+     * 
+     * @return Device's name 
+     */
+    std::string getDeviceName() const;
 
-        /**
-         * Apre la connessione
-         */
-        void open();
+    /**
+     * @brief Opens the connections
+     * 
+     * @throw SerialException
+     */
+    void open();
+    
+    /**
+     * @brief Closes the connection
+     * 
+     */
+    void close();
 
-        /**
-         * Chiude la connessione
-         */
-        void close();
+    /**
+     * @brief Writes a character
+     * 
+     * @throw SerialException
+     * 
+     * @param c Charater to write
+     */
+    void write(const unsigned char &c) const;
 
-        /**
-         * Scrive un carattere
-         * @param c Carattere da scrivere
-         */
-        void write(const unsigned char &c) const;
+    /**
+     * @brief Writes a string
+     * 
+     * @throw SerialException
+     * 
+     * @param s String to write
+     */
+    void write(const std::string &s) const;
 
-        /**
-         * Scrive una stringa
-         * @param s Stringa da scrivere
-         */
-        void write(const std::string &s) const;
+    /**
+     * @brief Returns the number of remaining charaters inside the buffer
+     * 
+     * @throw SerialException
+     * 
+     * @return Number of characters
+     */
+    unsigned int getCharaters() const;
 
-        /**
-         * Ritorna il numero di caratteri rimanenti nel buffer
-         * @return Numero di caratteri rimanenti
-         */
-        unsigned int getCharaters() const;
+    /**
+     * @brief Reads a character from the buffer
+     * 
+     * @throw SerialException
+     * 
+     * @return Character read
+     */
+    unsigned char read() const;
 
-        /**
-         * Legge un carattere dal buffer
-         * @return Carattere letto
-         */
-        unsigned char read() const;
-
-        /**
-         * Distruttore
-         */
-        ~SerialConnection();
-    };
-}
+    /**
+     * @brief Destructor
+     * 
+     */
+    ~SerialConnection();
+};
+} // namespace serial
 
 #endif //LIBPI_SERIALCONNECTION_H

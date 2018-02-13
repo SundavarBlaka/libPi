@@ -16,7 +16,7 @@ Sonar::Sonar(const OutputPin &trigger, const InputPin &echo, const unsigned int 
 
 float Sonar::getDistance(bool &error) const
 {
-    //TODO spostare la procedura in un thread separato
+    //TODO: spostare la procedura in un thread separato
 
     float res = 0;
 
